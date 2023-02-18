@@ -1,5 +1,5 @@
 import java.util.*;
-
+// 신고 결과 받기
 class Solution {
     public int[] solution(String[] id_list, String[] report, int k) {
         // report 배열 중복제거(같은 신고는 1회로 처리하기 때문)

@@ -1,5 +1,5 @@
 import java.util.ArrayList;
-
+// 문제 : 개인정보 수집 유효기간
 class Solution {
     public ArrayList<Integer> solution(String today, String[] terms, String[] privacies) {
     	// 공백 또는 .으로 나누어져 오는 문자열을 저장하기 위함
