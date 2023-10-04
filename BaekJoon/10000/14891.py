@@ -2,10 +2,6 @@ import sys
 
 def input():
     return sys.stdin.readline()
-gears = [[0]* 8 for _ in range(4)]
-for i in range(4):
-    gears[i] = list(map(int, input().strip()))
-K = int(input())
 
 def rotate(lst, direction):
     # 반시계방향 회전
@@ -21,6 +17,12 @@ def rotate(lst, direction):
             lst[i] = lst[i-1]
         lst[0] = temp
     return lst
+
+# input
+gears = [[0]* 8 for _ in range(4)]
+for i in range(4):
+    gears[i] = list(map(int, input().strip()))
+K = int(input())
 
 for _ in range(K):
     gearNum, direction = map(int, input().split())
