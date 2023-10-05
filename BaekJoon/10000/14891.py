@@ -26,7 +26,7 @@ K = int(input())
 
 for _ in range(K):
     gearNum, direction = map(int, input().split())
-    # 기어별 극점 
+    # 기어별 끼리 마주치는 점
     pole = [gears[0][2], gears[1][6], gears[1][2], gears[2][6], gears[2][2], gears[3][6]]
     
     if gearNum==1:
