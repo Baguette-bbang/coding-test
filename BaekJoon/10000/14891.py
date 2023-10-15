@@ -17,7 +17,7 @@ def rotate(lst, direction):
             lst[i] = lst[i-1]
         lst[0] = temp
     return lst
-
+# dequeue방식 으로 바꿔보기
 # input
 gears = [[0]* 8 for _ in range(4)]
 for i in range(4):
