@@ -3,12 +3,9 @@ def solution(numbers, target):
     answer = 0
     
     #초기값 설정
-    cal_list = []
-    cal_list.append(numbers[0])
-    cal_list.append(-numbers[0])
-    
+    cal_list = [0]    
     # 모든 경우의 수 탐색
-    for i in range(1,len(numbers)): 
+    for i in range(len(numbers)): 
         temp = []
         for num in cal_list: 
             temp.append(num+numbers[i])
