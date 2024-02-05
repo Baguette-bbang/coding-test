@@ -2,57 +2,43 @@ import sys
 input = sys.stdin.readline
 n, l = map(int, input().split())
 graph = [list(map(int,input().split())) for _ in range(n)]
-visited = [[False] * n for _ in range(n)]
-road = 0
 
-def check_decline(line, visited, l, r):
-    n = len(line)
-    for i in range(n - 1):
-        if abs(line[i] - line[i + 1]) >= 2:
-            return False
-
-        if abs(line[i] - line[i + 1]) == 1:
-            if line[i] > line[i + 1]:  # 현재 땅보다 다음 땅이 낮은 경우
-                if i + l < n:  # 경사로 설치 가능 범위 체크
-                    for j in range(i + 1, i + l + 1):
-                        # 높이가 달라지거나 이미 경사로가 설치된 경우
-                        if line[j] != line[i + 1] or visited[r][j]:
+def check_road(line, n, l, visited):
+    for i in range(n-1):
+        if abs(line[i] - line[i+1]) >= 2: # 높이가 1 이상 차이나는 경우
+            return False 
+        if abs(line[i] - line[i + 1]) == 1: # 높이가 딱 1만 차이나는 경우
+            if line[i] < line[i+1]: # 현재 위치가 다음 위치보다 더 낮은 경우
+                # 충분한 범위가 있는가? 방문하지 않았는가?
+                if i-l+1 >= 0:
+                    for j in range(i, i-l, -1):
+                        if line[j] != line[i] or visited[j]:
                             return False
-                    # 경사로 설치
-                    for j in range(i + 1, i + l + 1):
-                        visited[r][j] = True
+                    for j in range(i, i-l, -1):
+                        visited[j] = True
                 else:
                     return False
-                        
-            else:  # 현재 땅보다 다음 땅이 높은 경우
-                if i - l >= -1:
-                    for j in range(i, i - l, -1):
-                        # 높이가 달라지거나 이미 경사로가 설치된 경우
-                        if line[j] != line[i] or visited[r][j]:
+            else:
+                # 현재 위치가 다음 위치보다 높은 경우
+                if i+l < n:
+                    for j in range(i+1, i+l+1):
+                        if line[j] != line[i+1] or visited[j]:
                             return False
-                    # 경사로 설치
-                    for j in range(i, i - l, -1):
-                        visited[r][j] = True
+                    for j in range(i+1, i+l+1):
+                        visited[j] = True
                 else:
                     return False
     return True
-
-
-# 행 검사
-for i in range(n):
-    temp_visited = visited[i].copy()
-    if len(set(graph[i])) == 1 or check_decline(graph[i], visited, l, i):
+          
+road = 0
+for line in graph:
+    visited = [False] * n
+    if len(set(line)) == 1 or check_road(line, n, l, visited):
         road += 1
-    else:
-        visited[i] = temp_visited
-
-# graph 전치
-graph_transposed = list(map(list, zip(*graph)))
-visited = [[False] * n for _ in range(n)]
-for i in range(n):
-    temp_visited = visited[i].copy()
-    if len(set(graph_transposed[i])) == 1 or check_decline(graph_transposed[i], visited, l, i):
+        
+graph_transposed = list(zip(*graph))
+for line in graph_transposed:
+    visited = [False] * n
+    if len(set(line)) == 1 or check_road(line, n, l, visited):
         road += 1
-    else:
-        visited[i] = temp_visited
 print(road)
