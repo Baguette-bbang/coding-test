@@ -8,6 +8,7 @@ length = n*2
 robots_loc = deque([False] * length) # 로봇의 위치
 conveyor_belt_loc = deque([i for i in range(length)]) # 컨베이어 벨트 인덱스
 stage = 0
+cnt = 0
 while True:
     stage += 1
     # 1단계 회전
@@ -19,11 +20,14 @@ while True:
     # 2단계 로봇 자체 회전
     for i in range(n-2, -1, -1):
         if robots_loc[i]: # 로봇이 들어있는 위치
-            if not robots_loc[i+1] and conveyor_belt[conveyor_belt_loc[i+1]] >= 1: # 다음 칸에 로봇이 없고 내구도가 1 이상인가?
+            conveyor_loc = conveyor_belt_loc[i+1]
+            if not robots_loc[i+1] and conveyor_belt[conveyor_loc] >= 1: # 다음 칸에 로봇이 없고 내구도가 1 이상인가?
                 # 로봇을 다음 칸으로 이동시킨다.
                 robots_loc[i] ,robots_loc[i+1] = False, True
                 # 다음칸의 내구도를 감소시킨다.
-                conveyor_belt[conveyor_belt_loc[i+1]] -= 1
+                conveyor_belt[conveyor_loc] -= 1
+                if conveyor_belt[conveyor_loc] == 0:
+                    cnt += 1
                 # 이동한 칸이 내리는 칸인가?
                 if i+1 == n-1:
                     robots_loc[i+1] = False
@@ -32,8 +36,10 @@ while True:
     if conveyor_belt[conveyor_belt_loc[0]] >= 1:
         robots_loc[0] = True
         conveyor_belt[conveyor_belt_loc[0]] -= 1
+        if conveyor_belt[conveyor_belt_loc[0]] == 0:
+            cnt += 1
     
     # 4단계 0 확인하기
-    if conveyor_belt.count(0) >= k:
+    if cnt >= k:
         break
 print(stage)
