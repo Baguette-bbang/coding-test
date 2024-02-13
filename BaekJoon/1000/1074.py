@@ -16,9 +16,8 @@ def divide_array(x, y, size, cnt):
     new_size = size // 2
     for i in range(2):
         for j in range(2):
-            print(x + i * new_size, x + (i + 1) * new_size)
-            print(y + j * new_size, y + (j + 1) * new_size)
-            if x + i * new_size <= r < x + (i + 1) * new_size and y + j * new_size <= c < y + (j + 1) * new_size:
+            # 현재의 세로축의 시작 ~ 세로축의 끝, 현재의 가로축의 시작 ~ 가로축의 끝의 조건에 부합하는가?
+            if x + i * new_size <= r < x + (i+1) * new_size and y + j * new_size <= c < y + (j+1) * new_size:
                 divide_array(x + i * new_size, y + j * new_size, new_size, cnt)
             cnt += new_size ** 2
 
