@@ -1,3 +1,4 @@
+# 풀이 1
 from itertools import combinations
 from collections import defaultdict
 def solution(orders, course):
@@ -23,4 +24,26 @@ def solution(orders, course):
                     answer.append(new_menu[i][0])
                 else:
                     break
+    return sorted(answer)
+
+
+# ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- 
+# 풀이 2
+from collections import Counter
+from itertools import combinations
+def solution(orders, course):
+    answer = []
+    new_orders = [Counter() for _ in range(len(course))]
+    for order in orders:
+        for idx, size in enumerate(course):
+            new_orders[idx].update(combinations(sorted(order),size))
+    
+    for order in new_orders: # 길이 
+        if len(order) > 0 and max(order.values()) >= 2:
+            for key, value in sorted(order.items(), key = lambda x : x[1], reverse = True):
+                if value == max(order.values()):
+                    answer.append(''.join(key))
+                else:
+                    break
+                    
     return sorted(answer)
