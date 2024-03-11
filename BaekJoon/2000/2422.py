@@ -17,3 +17,4 @@ for not_combi in not_combis:
         temp_real = tuple(sorted(not_combi+[t]))
         real_not_combi.add(temp_real)
 print(length - len(real_not_combi))
+print(length)
