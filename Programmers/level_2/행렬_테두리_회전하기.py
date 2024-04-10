@@ -16,23 +16,27 @@ def solution(rows, columns, queries):
         temp = graph[start_r][start_c]
         min_value = temp
 
-        # 상
+        # 상으로 이동
         for i in range(start_r, end_r):
+            # 왼쪽 열
             graph[i][start_c] = graph[i+1][start_c]
             min_value = min(min_value, graph[i][start_c])
 
-        # 우
+        # 좌로 이동 
         for i in range(start_c, end_c):
+            # 아래쪽 행
             graph[end_r][i] = graph[end_r][i+1]
             min_value = min(min_value, graph[end_r][i])
 
-        # 하
+        # 하로 이동
         for i in range(end_r, start_r, -1):
+            # 오른쪽 열
             graph[i][end_c] = graph[i-1][end_c]
             min_value = min(min_value, graph[i][end_c])
 
-        # 좌
+        # 우로 이동
         for i in range(end_c, start_c, -1):
+            # 위쪽 행
             graph[start_r][i] = graph[start_r][i-1]
             min_value = min(min_value, graph[start_r][i])
 
