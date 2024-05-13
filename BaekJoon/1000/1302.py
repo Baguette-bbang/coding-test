@@ -1,3 +1,4 @@
+# 백준 1302번 베스트셀러 - 실버 4
 # 가장 많이 팔린 제목을 출력하는 것
 # 힙 자료구조를 사용해야 함.
 from heapq import heapify, heappop, heappush
