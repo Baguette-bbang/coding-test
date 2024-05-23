@@ -1,39 +1,56 @@
 from collections import deque
-import sys
+# bfs로 접근
+# 1. 최댓값과 최솟값 구하기
+# 2. 강수 높이 설정 반복은 최솟값~최댓값-1
+# 3. 강수 높이 이하인 것들은 잠기게 하기
+# 4. 잠기지 않은 안전영역의 개수 구하기 bfs로 탐색
 
-input = sys.stdin.readline
-N = int(input())
-graph = [list(map(int, input().split())) for _ in range(N)]
-visited = [[False]*N for _ in range(N)]
+# 조건1. 매 반복마다 딥카피를 사용하면 시간제한에 걸릴 듯 함.
 
-def safety_bfs(height, N, graph, visited, start):
-    x, y = start
-    queue = deque([(x,y)])
-    visited[x][y] = True
-    moves = [(-1,0), (1,0), (0,-1), (0,1)]
+n = int(input())
+
+graph = []
+min_val = float('inf')
+max_val = 0
+for _ in range(n):
+    line = list(map(int, input().split()))
+    min_val = min(min(line), min_val)
+    max_val = max(max(line), max_val)
+    graph.append(line)
+
+# print(graph)
+# print(min_val, max_val)
+moves = [(1,0),(0,1),(-1,0),(0,-1)]
+def bfs(i, j, visited):
+    queue = deque([(i,j)])
+    visited[i][j] = True
     
     while queue:
         x, y = queue.popleft()
-        for add_x, add_y in moves:
-            new_x = add_x+x
-            new_y = add_y+y
-            if (0<=new_x<N)and (0<=new_y<N) and graph[new_x][new_y] > height and not visited[new_x][new_y]:
-                queue.append((new_x,new_y))
-                visited[new_x][new_y] = True
+        for dx, dy in moves:
+            nx, ny = x+dx, y+dy
+            if 0<=nx<n and 0<=ny<n and not visited[nx][ny]:
+                visited[nx][ny] = True
+                queue.append((nx, ny))
+    
+def drown(height, visited):
+    for i in range(n):
+        for j in range(n):
+            if graph[i][j] <= height:
+                visited[i][j] = True
 
-max_value = max(max(row) for row in graph) + 1
-min_value = min(min(row) for row in graph)
+# print(visited_or_drown)
+max_safe_area = 0
+for height in range(min_val, max_val):
+    # 초기화
+    visited_or_drown = [[False] * n for _ in range(n)]
 
-answer = 1
-for height in range(min_value, max_value):
-    safety_zone = 0
-    visited = [[False]*N for _ in range(N)]
-    for i in range(N):
-        for j in range(N):
-            if graph[i][j] > height and not visited[i][j]:
-                safety_bfs(height, N, graph, visited, (i,j))
-                safety_zone += 1
-    if safety_zone > answer:
-        answer = safety_zone
-
-print(answer)
+    drown(height, visited_or_drown)
+    safe_area = 0
+    for i in range(n):
+        for j in range(n):
+            if not visited_or_drown[i][j]:
+                safe_area += 1
+                bfs(i, j, visited_or_drown)
+    max_safe_area = max(max_safe_area, safe_area)
+print(max(max_safe_area, 1))
