@@ -17,14 +17,15 @@ for _ in range(n):
     
 queue.append((0,0))
 visited = [[False]*n for _ in range(n)]
-moves = [(0,1), (1,0)]
+moves = [(0,1), (1,0)] # 오른쪽과 아래쪽
 visited[0][0] = True
 while queue:
     x, y = queue.popleft()
-    if graph[x][y] == -1:
+    if graph[x][y] == -1: # 도착 시
         print('HaruHaru')
         break
     for dx, dy in moves:
+        # 발판에 있는 수만큼 이동
         nx, ny = x + dx*graph[x][y], y + dy*graph[x][y]
         if 0<=nx<n and 0<=ny<n and not visited[nx][ny]:
             queue.append((nx,ny))
